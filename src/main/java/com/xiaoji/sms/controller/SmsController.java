@@ -46,7 +46,12 @@ public class SmsController {
     			&& !"".equals(dto.getSendType())){
 			//发送短信验证码
 			if(dto.getSendContent()!=null && !"".equals(dto.getSendContent())){
-				smsService.sendSms(dto.getMobile(),dto.getSendType(),dto.getSendContent());
+				// 非测试用手机号码,直接发送短信
+				if (!dto.getMobile().startsWith("13900009")) {
+					smsService.sendSms(dto.getMobile(),dto.getSendType(),dto.getSendContent());
+				} else {
+					logger.info("======== 测试用手机号：发送已忽略  =========");
+				}
 				isSuccess = true;
 			}else{
 				out.setRc(ReturnMessage.NULL_CODE);
